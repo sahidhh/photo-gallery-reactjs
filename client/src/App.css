@@ -1,0 +1,10 @@
+#nav-bar {
+  background-color: #8b8787;
+  position: fixed;
+  width: 100%;
+}
+
+#container {
+  height: 200vh;
+}
+    
