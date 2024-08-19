@@ -1,0 +1,77 @@
+.float-button {
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  height: 40px;
+  width: 40px;
+  border: none;
+  border-radius: 50px;
+  background-color: #f68f50;
+  position: fixed;
+  bottom: 3rem;
+  right: 4rem;
+  box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.126);
+}
+
+.backdrop {
+  background-color: rgba(128, 128, 128, 0.79);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 326px;
+  height: 316px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 8px 8px 0px rgba(110, 110, 110, 0.2);
+}
+
+form h3{
+  text-align: center;
+  padding: 10px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.form-row input {
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.form-row input::-webkit-input-placeholder {
+  opacity: 0.2;
+}
+
+.form-row input:focus {
+  outline: 1px solid rgba(169, 167, 167, 0.285);
+}
+
+.form-btn {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+form button {
+  color: white;
+  background-color: #f68f50;
+  border: none;
+  border-radius: 8px;
+  width: 119.83px;
+  height: 36.46px;
+}
