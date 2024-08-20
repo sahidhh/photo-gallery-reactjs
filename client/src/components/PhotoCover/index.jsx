@@ -6,6 +6,10 @@ const PhotoCover = ({ id, artist, url, description, date, favorite }) => {
   const [isFavorite, setIsFavorite] = useState(favorite);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const dateTemp = new Date(date);
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  const formattedDate = dateTemp.toLocaleDateString("en-GB", options);
+
   const updateFavorite = async (value) => {
     await axios
       .put(`http://localhost:8800/photos/update/${id}`, {
@@ -94,7 +98,7 @@ const PhotoCover = ({ id, artist, url, description, date, favorite }) => {
         <div className="info">
           <p className="photo-desc">{description}</p>
           <div className="photo-details">
-            <p className="photo-date">{date}</p>
+            <p className="photo-date">{formattedDate}</p>
             <p className="photo-artist">-{artist}</p>
           </div>
         </div>
