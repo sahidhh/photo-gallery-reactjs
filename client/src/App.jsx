@@ -22,7 +22,6 @@ const App = () => {
 
   useEffect(() => {
     fetchAllPhotos();
-    // console.log(PhotoSort);
   }, [PhotoSort]);
 
   return (
