@@ -8,14 +8,24 @@ import PhotoCover from "./components/PhotoCover";
 
 const App = () => {
   const [photos, setPhotos] = useState([]);
-  const [PhotoFilter, setPhotoFilter] = useState([]);
-  const [PhotoFilterAll, setPhotoFilterAll] = useState(true);
-  const [PhotoSort, setPhotoSort] = useState("latest-last");
+  const [photoFilter, setPhotoFilter] = useState([]);
+  const [photoFilterOptions, setPhotoFilterOptions] = useState([]);
+  const [photoFilterAll, setPhotoFilterAll] = useState(true);
+  const [photoSort, setPhotoSort] = useState("latest-last");
 
   const fetchAllPhotos = async () => {
     try {
-      const res = await axios.get(`http://localhost:8800/photos/${PhotoSort}`);
+      const res = await axios.get(`http://localhost:8800/photos/${photoSort}`);
       await setPhotos(res.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const fetchArtistNames = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8800/photos/name/unique`);
+      await setPhotoFilterOptions(res.data);
     } catch (e) {
       console.error(e);
     }
@@ -23,17 +33,19 @@ const App = () => {
 
   const handleChecked = (e) => {
     if (e.target.checked) {
-      setPhotoFilter((prev) => prev.filter((val) => val !== e.target.value));
-    } else {
       setPhotoFilter((prev) => [...prev, e.target.value]);
+    } else {
+      setPhotoFilter((prev) => prev.filter((val) => val !== e.target.value));
     }
 
-    console.log(PhotoFilter);
+    console.log(photoFilter);
+    console.log(photoFilterOptions);
   };
 
   useEffect(() => {
     fetchAllPhotos();
-  }, [PhotoSort]);
+    fetchArtistNames();
+  }, [photoSort, photoFilter]);
 
   return (
     <div id="container">
@@ -100,21 +112,23 @@ const App = () => {
                 All Photos
               </label>
 
-              <label htmlFor="santhos">
-                <input
-                  type="checkbox"
-                  id="santhos"
-                  value="Jon Eats"
-                  onChange={handleChecked}
-                />{" "}
-                santhos
-              </label>
+              {photoFilterOptions.map(({ id, artist_name }) => (
+                <label htmlFor={artist_name} key={id}>
+                  <input
+                    type="checkbox"
+                    id={artist_name}
+                    value={artist_name}
+                    onChange={handleChecked}
+                  />{" "}
+                  {artist_name}
+                </label>
+              ))}
             </div>
           </div>
         </div>
       </div>
       <div className="content-main">
-        {PhotoFilterAll &&
+        {photoFilterAll &&
           photos.map(
             ({ id, artist_name, url, description, last_updated, favorite }) => (
               <PhotoCover

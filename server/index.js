@@ -42,6 +42,14 @@ app.get("/photos/name", (req, res) => {
   });
 });
 
+app.get("/photos/name/unique", (req, res) => {
+  const q = "SELECT id, artist_name FROM photos GROUP BY artist_name";
+  db.query(q, (err, data) => {
+    if (err) console.log(err);
+    return res.json(data);
+  });
+});
+
 app.post("/photos", (req, res) => {
   const q =
     "INSERT INTO photos (`artist_name`, `url`, `description`) VALUES (?)";
