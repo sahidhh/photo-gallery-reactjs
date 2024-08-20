@@ -8,7 +8,8 @@ import PhotoCover from "./components/PhotoCover";
 
 const App = () => {
   const [photos, setPhotos] = useState([]);
-  const [PhotoFilter, setPhotoFilter] = useState("");
+  const [PhotoFilter, setPhotoFilter] = useState([]);
+  const [PhotoFilterAll, setPhotoFilterAll] = useState(true);
   const [PhotoSort, setPhotoSort] = useState("latest-last");
 
   const fetchAllPhotos = async () => {
@@ -18,6 +19,16 @@ const App = () => {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const handleChecked = (e) => {
+    if (e.target.checked) {
+      setPhotoFilter((prev) => prev.filter((val) => val !== e.target.value));
+    } else {
+      setPhotoFilter((prev) => [...prev, e.target.value]);
+    }
+
+    console.log(PhotoFilter);
   };
 
   useEffect(() => {
@@ -78,8 +89,13 @@ const App = () => {
                 <input
                   type="checkbox"
                   id="all-photos"
-                  name="all-photos"
-                  value="all-photos"
+                  value={"all-photos"}
+                  defaultChecked
+                  onChange={(e) => {
+                    e.target.checked
+                      ? setPhotoFilterAll(true)
+                      : setPhotoFilterAll(false);
+                  }}
                 />{" "}
                 All Photos
               </label>
@@ -88,8 +104,8 @@ const App = () => {
                 <input
                   type="checkbox"
                   id="santhos"
-                  name="santhos"
-                  value="santhos"
+                  value="Jon Eats"
+                  onChange={handleChecked}
                 />{" "}
                 santhos
               </label>
@@ -98,19 +114,20 @@ const App = () => {
         </div>
       </div>
       <div className="content-main">
-        {photos.map(
-          ({ id, artist_name, url, description, last_updated, favorite }) => (
-            <PhotoCover
-              key={id}
-              id={id}
-              artist={artist_name}
-              url={url}
-              description={description}
-              date={last_updated}
-              favorite={favorite}
-            />
-          )
-        )}
+        {PhotoFilterAll &&
+          photos.map(
+            ({ id, artist_name, url, description, last_updated, favorite }) => (
+              <PhotoCover
+                key={id}
+                id={id}
+                artist={artist_name}
+                url={url}
+                description={description}
+                date={last_updated}
+                favorite={favorite}
+              />
+            )
+          )}
         <FloatButton />
       </div>
     </div>
