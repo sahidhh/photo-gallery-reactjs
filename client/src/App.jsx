@@ -8,6 +8,7 @@ import PhotoCover from "./components/PhotoCover";
 
 const App = () => {
   const [photos, setPhotos] = useState([]);
+  const [filteredPhotos, setFilteredPhotos] = useState([]);
   const [photoFilter, setPhotoFilter] = useState([]);
   const [photoFilterOptions, setPhotoFilterOptions] = useState([]);
   const [photoFilterAll, setPhotoFilterAll] = useState(true);
@@ -31,20 +32,32 @@ const App = () => {
     }
   };
 
+  const filterList = () => {
+    const tempPhotos = photos.filter((val) =>
+      photoFilter.includes(val.artist_name)
+    );
+
+    setFilteredPhotos(tempPhotos);
+  };
+
   const handleChecked = (e) => {
+    var arr = [...photoFilter];
+
     if (e.target.checked) {
-      setPhotoFilter((prev) => [...prev, e.target.value]);
+      arr = [...arr, e.target.value];
     } else {
-      setPhotoFilter((prev) => prev.filter((val) => val !== e.target.value));
+      arr.splice(photoFilter.indexOf(e.target.value), 1);
     }
 
-    console.log(photoFilter);
-    console.log(photoFilterOptions);
+    setPhotoFilter(arr);
+
+    filterList();
   };
 
   useEffect(() => {
     fetchAllPhotos();
     fetchArtistNames();
+    console.log(filteredPhotos);
   }, [photoSort, photoFilter]);
 
   return (
