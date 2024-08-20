@@ -1,9 +1,22 @@
 import { useState } from "react";
 import "./FloatButton.css";
+import axios from "axios";
 
 const FloatButton = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [formData, setFormData] = useState({ name: "", url: "", desc: "" });
+
+  const addPhoto = async () => {
+    try {
+      await axios
+        .post(`http://localhost:8800/photos`, formData)
+        .then((response) => {
+          console.log(response);
+        });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -12,9 +25,10 @@ const FloatButton = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    addPhoto();
     setFormOpen(false);
     setFormData({ name: "", url: "", desc: "" });
+    window.location.reload();
   };
 
   return (
