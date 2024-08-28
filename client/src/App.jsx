@@ -11,13 +11,13 @@ const App = () => {
   const [filteredPhotos, setFilteredPhotos] = useState([]);
   const [photoFilter, setPhotoFilter] = useState([]);
   const [photoFilterOptions, setPhotoFilterOptions] = useState([]);
-  const [photoFilterAll, setPhotoFilterAll] = useState(true);
   const [photoSort, setPhotoSort] = useState("latest-last");
 
   const fetchAllPhotos = async () => {
     try {
       const res = await axios.get(`http://localhost:8800/photos/${photoSort}`);
       await setPhotos(res.data);
+      await setFilteredPhotos(res.data);
     } catch (e) {
       console.error(e);
     }
@@ -32,10 +32,13 @@ const App = () => {
     }
   };
 
-  const filterList = () => {
-    const tempPhotos = photos.filter((val) =>
-      photoFilter.includes(val.artist_name)
-    );
+  const filterList = (arr) => {
+    const tempPhotos = photos.filter((val) => {
+      console.log(val.id, arr.includes(val.id));
+      return arr.includes(val.id);
+    });
+
+    console.log(tempPhotos);
 
     setFilteredPhotos(tempPhotos);
   };
@@ -43,21 +46,21 @@ const App = () => {
   const handleChecked = (e) => {
     var arr = [...photoFilter];
     if (e.target.checked) {
-      arr = [...arr, e.target.value];
+      arr = [...arr, Number(e.target.id)];
     } else {
-      arr.splice(photoFilter.indexOf(e.target.value), 1);
+      arr.splice(photoFilter.indexOf(e.target.id), 1);
     }
 
+    console.log(arr);
     setPhotoFilter(arr);
 
-    filterList();
+    filterList(arr);
   };
 
   useEffect(() => {
     fetchAllPhotos();
     fetchArtistNames();
-    console.log(filteredPhotos);
-  }, [photoSort, photoFilter]);
+  }, []);
 
   return (
     <div id="container">
@@ -117,18 +120,18 @@ const App = () => {
                   defaultChecked
                   onChange={(e) => {
                     e.target.checked
-                      ? setPhotoFilterAll(true)
-                      : setPhotoFilterAll(false);
+                      ? setFilteredPhotos(photos)
+                      : setFilteredPhotos([]);
                   }}
                 />{" "}
                 All Photos
               </label>
 
               {photoFilterOptions.map(({ id, artist_name }) => (
-                <label htmlFor={artist_name} key={id}>
+                <label htmlFor={id} key={id}>
                   <input
                     type="checkbox"
-                    id={artist_name}
+                    id={id}
                     value={artist_name}
                     onChange={handleChecked}
                   />{" "}
@@ -141,27 +144,19 @@ const App = () => {
       </div>
       <div className="content-container">
         <div className="content-main">
-          {photoFilterAll &&
-            photos.map(
-              ({
-                id,
-                artist_name,
-                url,
-                description,
-                last_updated,
-                favorite,
-              }) => (
-                <PhotoCover
-                  key={id}
-                  id={id}
-                  artist={artist_name}
-                  url={url}
-                  description={description}
-                  date={last_updated}
-                  favorite={favorite}
-                />
-              )
-            )}
+          {filteredPhotos.map(
+            ({ id, artist_name, url, description, last_updated, favorite }) => (
+              <PhotoCover
+                key={id}
+                id={id}
+                artist={artist_name}
+                url={url}
+                description={description}
+                date={last_updated}
+                favorite={favorite}
+              />
+            )
+          )}
           <FloatButton />
         </div>
       </div>
