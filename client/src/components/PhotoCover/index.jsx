@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./PhotoCover.css";
 import axios from "axios";
 
@@ -52,7 +52,7 @@ const PhotoCover = ({ id, artist, url, description, date, favorite }) => {
   };
 
   return (
-    <>
+    <div>
       <div
         className="backdrop"
         style={{ display: !modalOpen ? "none" : "flex" }}
@@ -103,7 +103,7 @@ const PhotoCover = ({ id, artist, url, description, date, favorite }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

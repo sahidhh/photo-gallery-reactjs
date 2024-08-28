@@ -42,7 +42,6 @@ const App = () => {
 
   const handleChecked = (e) => {
     var arr = [...photoFilter];
-
     if (e.target.checked) {
       arr = [...arr, e.target.value];
     } else {
@@ -140,22 +139,31 @@ const App = () => {
           </div>
         </div>
       </div>
-      <div className="content-main">
-        {photoFilterAll &&
-          photos.map(
-            ({ id, artist_name, url, description, last_updated, favorite }) => (
-              <PhotoCover
-                key={id}
-                id={id}
-                artist={artist_name}
-                url={url}
-                description={description}
-                date={last_updated}
-                favorite={favorite}
-              />
-            )
-          )}
-        <FloatButton />
+      <div className="content-container">
+        <div className="content-main">
+          {photoFilterAll &&
+            photos.map(
+              ({
+                id,
+                artist_name,
+                url,
+                description,
+                last_updated,
+                favorite,
+              }) => (
+                <PhotoCover
+                  key={id}
+                  id={id}
+                  artist={artist_name}
+                  url={url}
+                  description={description}
+                  date={last_updated}
+                  favorite={favorite}
+                />
+              )
+            )}
+          <FloatButton />
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,16 @@
 .photo-container {
   height: 200px;
   width: 200px;
+  min-height: 150px;
+  min-width: 150px;
+  flex-basis: 20%;
   background-color: aliceblue;
   position: relative;
   border: none;
   border-radius: 6px;
   margin: 15px;
   overflow: hidden;
+  
 }
 
 .photo-container img {
